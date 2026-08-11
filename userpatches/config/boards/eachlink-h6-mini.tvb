@@ -1,0 +1,12 @@
+# Eachlink H6 Mini TV box, Allwinner H6, 2GB DDR3, 8GB eMMC
+BOARD_NAME="Eachlink H6 Mini"
+BOARD_VENDOR="eachlink"
+BOARDFAMILY="sun50iw6"
+BOARD_MAINTAINER=""
+INTRODUCED="2018"
+BOOTCONFIG="eachlink_h6_mini_defconfig"
+KERNEL_TARGET="current"
+KERNEL_TEST_TARGET="current"
+CRUSTCONFIG="h6_defconfig"
+BOOT_FDT_FILE="none"
+HAS_VIDEO_OUTPUT="no"
