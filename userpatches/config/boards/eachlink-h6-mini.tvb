@@ -1,10 +1,12 @@
 # Eachlink H6 Mini TV box, Allwinner H6, 2GB DDR3, 8GB eMMC
-BOARD_NAME="Eachlink H6 Mini"
+# Current mainline U-Boot lacks the unmerged Eachlink defconfig.
+# Tanix TX6 is the closest maintained H6 + DDR3 SPL/DRAM configuration.
+BOARD_NAME="Eachlink H6 Mini (TX6-compatible boot)"
 BOARD_VENDOR="eachlink"
 BOARDFAMILY="sun50iw6"
 BOARD_MAINTAINER=""
 INTRODUCED="2018"
-BOOTCONFIG="eachlink_h6_mini_defconfig"
+BOOTCONFIG="tanix_tx6_defconfig"
 KERNEL_TARGET="current"
 KERNEL_TEST_TARGET="current"
 CRUSTCONFIG="h6_defconfig"
