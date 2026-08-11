@@ -1,0 +1,57 @@
+name: Build Eachlink H6 Mini Armbian
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Check out builder configuration
+        uses: actions/checkout@v4
+
+      - name: Check out Armbian build framework
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          path: armbian-build
+          fetch-depth: 1
+
+      - name: Install Eachlink H6 Mini board configuration
+        run: |
+          mkdir -p armbian-build/userpatches/config/boards
+          cp userpatches/config/boards/eachlink-h6-mini.tvb \
+            armbian-build/userpatches/config/boards/
+          cp userpatches/customize-image.sh armbian-build/userpatches/
+
+      - name: Build minimal Debian image
+        working-directory: armbian-build
+        run: |
+          ./compile.sh build \
+            BOARD=eachlink-h6-mini \
+            BRANCH=current \
+            RELEASE=bookworm \
+            BUILD_MINIMAL=yes \
+            BUILD_DESKTOP=no \
+            KERNEL_CONFIGURE=no \
+            COMPRESS_OUTPUTIMAGE=xz \
+            SHARE_LOG=yes
+
+      - name: Create checksums
+        run: |
+          cd armbian-build/output/images
+          sha256sum *.img.xz > SHA256SUMS
+
+      - name: Upload TF-card image
+        uses: actions/upload-artifact@v4
+        with:
+          name: eachlink-h6-mini-armbian-bookworm
+          path: |
+            armbian-build/output/images/*.img.xz
+            armbian-build/output/images/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7
